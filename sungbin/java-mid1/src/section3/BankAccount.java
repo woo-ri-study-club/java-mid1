@@ -6,11 +6,11 @@ public class BankAccount {
 
     private final String accountNumber;
 
-    private final String owner;
+    private final Member owner;
 
     private final long balance;
 
-    public BankAccount(String accountNumber, String owner, long balance) {
+    public BankAccount(String accountNumber, Member owner, long balance) {
         this.accountNumber = accountNumber;
         this.owner = owner;
         this.balance = balance;
@@ -36,20 +36,20 @@ public class BankAccount {
         return new BankAccount(this.accountNumber, this.owner, this.balance - amount);
     }
 
-    public long getBalance() {
-        return balance;
+    public Member getOwner() {
+        return owner;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         BankAccount that = (BankAccount) o;
-        return Objects.equals(accountNumber, that.accountNumber);
+        return Objects.equals(accountNumber, that.accountNumber) && Objects.equals(getOwner(), that.getOwner());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(accountNumber);
+        return Objects.hash(accountNumber, getOwner());
     }
 
     @Override
