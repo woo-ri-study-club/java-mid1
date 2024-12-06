@@ -26,7 +26,7 @@ Object 가 제공하는 기능은 다음과 같다.
 - 객체의 정보를 제공하는 toString()
 - 객체의 같음을 비교하는 equals()
 - 객체의 클래스 정보를 제공하는 getClass()
-- 객체의 참조값을 제공하는 hashCode()
+- 객체를 식별하는 해시 코드를 제공하는 hashCode()
 
 ### toString()
 - toString() 메서드는 객체의 정보를 문자열 형태로 제공한다. 그래서 디버깅과 로깅에 유용하게 사용된다
@@ -47,3 +47,15 @@ public String toString() {
   - 추이성(Transitivity): 만약 한 객체가 두 번째 객체와 동일하고, 두 번째 객체가 세 번째 객체와 동일하다면, 첫 번째 객체는 세 번째 객체와도 동일해야 한다. 
   - 일관성(Consistency): 두 객체의 상태가 변경되지 않는 한, equals() 메소드는 항상 동일한 값을 반환해야 한다. 
   - null에 대한 비교: 모든 객체는 null 과 비교했을 때 false 를 반환해야 한다.
+
+### 동일성과 동등성의 차이점
+- 동일성(Identity): 두 객체의 레퍼런스가 같은지를 비교한다. ( == )
+- 동등성(Equality): 두 객체의 값이 같은지를 비교한다. ( equals() )
+- 동일성과 동등성의 예
+```java
+String str1 = new String("abc");
+String str2 = new String("abc");
+
+System.out.println(str1 == str2); // false (레퍼런스가 다름)
+System.out.println(str1.equals(str2)); // true (값이 같음)
+```
