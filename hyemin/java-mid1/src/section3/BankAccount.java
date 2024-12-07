@@ -6,6 +6,9 @@ public class BankAccount {
     private final double balance;
 
     public BankAccount(String accountNumber, String owner, double balance) {
+        if(balance < 0) {
+            throw new IllegalArgumentException("잘못된 계좌 금액입니다. (음수)");
+        }
         this.accountNumber = accountNumber;
         this.owner = owner;
         this.balance = balance;
@@ -13,7 +16,7 @@ public class BankAccount {
 
     public BankAccount deposit(double amount) {
         if (amount < 0) {
-            throw new IllegalArgumentException("잘못된 금액입니다. (음수)");
+            throw new IllegalArgumentException("잘못된 입금 금액입니다. (음수)");
         }
         return new BankAccount(accountNumber, owner, balance + amount);
     }
