@@ -53,7 +53,7 @@ public class BankAccount {
 
     @Override
     public int hashCode() {
-        return Objects.hash(accountNumber, getOwner());
+        return Objects.hash(accountNumber);
     }
 
     @Override
