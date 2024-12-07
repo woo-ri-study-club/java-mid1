@@ -23,7 +23,7 @@ public class BankAccount {
         if (price < 0) {
             throw new IllegalArgumentException("잔액이 부족합니다.");
         }
-        return new BankAccount(accountNumber, owner, balance - amount);
+        return new BankAccount(accountNumber, owner, price);
     }
 
     public double getBalance() {
