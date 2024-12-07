@@ -16,7 +16,7 @@ public class BankAccount {
         this.balance = balance;
     }
 
-    public BankAccount deposit(long amount) {
+    public BankAccount withDeposit(long amount) {
         if (amount <= 0) {
             throw new IllegalArgumentException("입금할 금액이 잘못 되었습니다.");
         }
@@ -24,7 +24,7 @@ public class BankAccount {
         return new BankAccount(this.accountNumber, this.owner, this.balance + amount);
     }
 
-    public BankAccount withdraw(long amount) {
+    public BankAccount withWithdraw(long amount) {
         if (amount <= 0) {
             throw new IllegalArgumentException("입금할 금액이 잘못 되었습니다.");
         }
