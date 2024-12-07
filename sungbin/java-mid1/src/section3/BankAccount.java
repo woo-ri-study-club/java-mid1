@@ -11,6 +11,10 @@ public class BankAccount {
     private final long balance;
 
     public BankAccount(String accountNumber, Member owner, long balance) {
+        if (balance < 0) {
+            throw new IllegalArgumentException("잔액이 잘못되었습니다.");
+        }
+
         this.accountNumber = accountNumber;
         this.owner = owner;
         this.balance = balance;
@@ -26,7 +30,7 @@ public class BankAccount {
 
     public BankAccount withWithdraw(long amount) {
         if (amount <= 0) {
-            throw new IllegalArgumentException("입금할 금액이 잘못 되었습니다.");
+            throw new IllegalArgumentException("출금할 금액이 잘못 되었습니다.");
         }
 
         if (amount > this.balance) {
@@ -54,6 +58,6 @@ public class BankAccount {
 
     @Override
     public String toString() {
-        return String.format("[계좌번: %s, 소유자: %s, 잔액: %d]", this.accountNumber, this.owner, this.balance);
+        return String.format("[계좌번호: %s, 소유자: %s, 잔액: %d]", this.accountNumber, this.owner, this.balance);
     }
 }
