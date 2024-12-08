@@ -1,6 +1,5 @@
-package setction4;
+package section4;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 public class Mission1 {
