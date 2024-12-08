@@ -6,6 +6,9 @@ public class BankAccount {
     private final double balance;
 
     public BankAccount(String accountNumber, String owner, double balance) {
+        if(balance < 0){
+            throw new IllegalArgumentException("계좌 개설 시 잔액은 0원 이상이어야 합니다.");
+        }
         this.accountNumber = accountNumber;
         this.owner = owner;
         this.balance = balance;
