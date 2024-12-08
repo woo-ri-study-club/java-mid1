@@ -1,5 +1,8 @@
 package setction4;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
 public class Mission1 {
     public static void main(String[] args) {
         String str1 = "Listen";
@@ -9,22 +12,12 @@ public class Mission1 {
     }
 
     static boolean isAnagram(String str1, String str2) {
-        str1 = str1.strip().toLowerCase();
-        str2 = str2.strip().toLowerCase();
+        char[] str1Array = str1.strip().toLowerCase().toCharArray();
+        char[] str2Array = str2.strip().toLowerCase().toCharArray();
 
-        char[] str1Array = str1.toCharArray();
-        for (char str1Char : str1Array) {
-            String letter = String.valueOf(str1Char);
+        Arrays.sort(str1Array);
+        Arrays.sort(str2Array);
 
-            if (str2.contains(letter)) {
-                str2 = str2.replaceFirst(letter, "");
-            }
-        }
-
-        if (str2.isEmpty()) {
-            return true;
-        }
-
-        return false;
+        return Arrays.equals(str1Array, str2Array);
     }
 }
