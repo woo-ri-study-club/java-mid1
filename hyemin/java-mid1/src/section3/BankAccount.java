@@ -22,11 +22,14 @@ public class BankAccount {
     }
 
     public BankAccount withdraw(double amount) {
-        double price = balance - amount;
-        if (price < 0) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("잘못된 출금 금액입니다. (음수)");
+        }
+        double newBalance = balance - amount;
+        if (newBalance < 0) {
             throw new IllegalArgumentException("잔액이 부족합니다.");
         }
-        return new BankAccount(accountNumber, owner, price);
+        return new BankAccount(accountNumber, owner, newBalance);
     }
 
     public double getBalance() {
