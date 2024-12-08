@@ -7,7 +7,7 @@ public class BankAccount {
 
     public BankAccount(String accountNumber, String owner, long balance) {
         if (balance < 0) {
-            throw new IllegalArgumentException("잔액이 부족합니다.");
+            throw new IllegalArgumentException("계좌 생성 시 잔액은 0원 이상이어야 합니다.");
         }
 
         this.accountNumber = accountNumber;
