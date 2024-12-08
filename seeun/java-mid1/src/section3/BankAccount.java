@@ -19,6 +19,9 @@ public class BankAccount {
     }
 
     public BankAccount withdraw(double amount) {
+        if(amount <= 0){
+            throw new IllegalArgumentException("0원 이하는 출금할 수 없습니다. ");
+        }
         if (balance < amount) {
             throw new IllegalArgumentException("잔액이 부족합니다.");
         }

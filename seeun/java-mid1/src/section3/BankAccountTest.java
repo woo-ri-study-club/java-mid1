@@ -6,6 +6,7 @@ public class BankAccountTest {
         BankAccount account1 = new BankAccount("123-456", "홍길동", 1000.0);
         BankAccount account2 = account1.deposit(500.0);
         BankAccount account3 = account2.withdraw(200.0);
+//        BankAccount account4 = account2.withdraw(-200.0); // 에러 발생 : 0원 이하는 출금할 수 없습니다.
 
         System.out.println(account1.getBalance()); // 1000.0
         System.out.println(account2.getBalance()); // 1500.0
