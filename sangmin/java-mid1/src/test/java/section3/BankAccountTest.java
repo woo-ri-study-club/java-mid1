@@ -25,7 +25,7 @@ class BankAccountTest {
         BankAccount bankAccount = new BankAccount("1234", "김철수", 1000);
         //when & then
         assertThrows(IllegalArgumentException.class,
-                () -> bankAccount.deposit(-1000),
+                () -> bankAccount.deposit(-1),
                 "0원 이하의 금액을 입금할 수 없습니다."
         );
     }
@@ -36,21 +36,9 @@ class BankAccountTest {
         //given
         BankAccount bankAccount = new BankAccount("1234", "김철수", 1000);
         //when
-        BankAccount withdrawnAccount = bankAccount.withdraw(500);
+        BankAccount withdrawnAccount = bankAccount.withdraw(1000);
         //then
-        assertThat(withdrawnAccount.getBalance()).isEqualTo(500);
-    }
-
-    @DisplayName("음수 금액을 출금하면 오류 메시지가 발생한다.")
-    @Test
-    void withdrawNegativeAmount() {
-        //given
-        BankAccount bankAccount = new BankAccount("1234", "김철수", 1000);
-        //when & then
-        assertThrows(IllegalArgumentException.class,
-                () -> bankAccount.withdraw(-1000),
-                "0원 이하의 금액을 출금할 수 없습니다."
-        );
+        assertThat(withdrawnAccount.getBalance()).isEqualTo(0);
     }
 
     @DisplayName("잔액보다 많은 금액을 출금하면 오류 메시지가 발생한다.")
@@ -60,8 +48,20 @@ class BankAccountTest {
         BankAccount bankAccount = new BankAccount("1234", "김철수", 1000);
         //when & then
         assertThrows(IllegalArgumentException.class,
-                () -> bankAccount.withdraw(2000),
+                () -> bankAccount.withdraw(1001),
                 "잔액이 부족합니다."
+        );
+    }
+
+    @DisplayName("음수 금액을 출금하면 오류 메시지가 발생한다.")
+    @Test
+    void withdrawNegativeAmount() {
+        //given
+        BankAccount bankAccount = new BankAccount("1234", "김철수", 1000);
+        //when & then
+        assertThrows(IllegalArgumentException.class,
+                () -> bankAccount.withdraw(-1),
+                "0원 이하의 금액을 출금할 수 없습니다."
         );
     }
 }
