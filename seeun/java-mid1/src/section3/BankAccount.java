@@ -1,5 +1,7 @@
 package section3;
 
+import java.util.Objects;
+
 public class BankAccount {
     private final String accountNumber;
     private final String owner;
@@ -33,5 +35,18 @@ public class BankAccount {
 
     public double getBalance() {
         return balance;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        BankAccount that = (BankAccount) object;
+        return Objects.equals(accountNumber, that.accountNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(accountNumber);
     }
 }
