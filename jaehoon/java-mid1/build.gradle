@@ -2,7 +2,7 @@ plugins {
     id 'java'
 }
 
-group = 'java-mid1'
+group = 'jaehoon'
 version = '1.0-SNAPSHOT'
 
 repositories {
