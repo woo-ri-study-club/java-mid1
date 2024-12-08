@@ -5,8 +5,8 @@ public class Main {
         Member member = new Member("M001", "홍길동");
 
         BankAccount account1 = new BankAccount("123-456", member, 100000);
-        BankAccount account2 = account1.withDeposit(50000);
-        BankAccount account3 = account2.withWithdraw(20000);
+        BankAccount account2 = account1.deposit(50000);
+        BankAccount account3 = account2.withdraw(20000);
 
         System.out.println(account1);
         System.out.println(account2);

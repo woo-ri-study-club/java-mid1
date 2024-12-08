@@ -20,15 +20,15 @@ public class BankAccount {
         this.balance = balance;
     }
 
-    public BankAccount withDeposit(long amount) {
+    public BankAccount deposit(long amount) {
         if (amount <= 0) {
             throw new IllegalArgumentException("입금할 금액이 잘못 되었습니다.");
         }
 
-        return new BankAccount(this.accountNumber, this.owner, this.balance + amount);
+        return this.withBalance(this.balance + amount);
     }
 
-    public BankAccount withWithdraw(long amount) {
+    public BankAccount withdraw(long amount) {
         if (amount <= 0) {
             throw new IllegalArgumentException("출금할 금액이 잘못 되었습니다.");
         }
@@ -37,7 +37,7 @@ public class BankAccount {
             throw new IllegalArgumentException("잔액이 부족합니다.");
         }
 
-        return new BankAccount(this.accountNumber, this.owner, this.balance - amount);
+        return this.withBalance(this.balance - amount);
     }
 
     public Member getOwner() {
@@ -59,5 +59,9 @@ public class BankAccount {
     @Override
     public String toString() {
         return String.format("[계좌번호: %s, 소유자: %s, 잔액: %d]", this.accountNumber, this.owner, this.balance);
+    }
+
+    private BankAccount withBalance(long balance) {
+        return new BankAccount(this.accountNumber, this.owner, balance);
     }
 }
