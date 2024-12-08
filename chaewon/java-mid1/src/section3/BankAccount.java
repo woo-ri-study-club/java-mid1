@@ -20,11 +20,20 @@ public class BankAccount {
             throw new IllegalArgumentException("올바르지 않은 입금액입니다.");
         }
 
-        return new BankAccount(accountNumber, owner, balance + amount);
+        long result = balance + amount;
+        return new BankAccount(accountNumber, owner, result);
     }
 
     public BankAccount withdraw(long amount) {
+        if(amount <= 0){
+            throw new IllegalArgumentException("올바르지 않은 출금액입니다.");
+        }
+
         long result = balance - amount;
+
+        if(result < 0){
+            throw new IllegalArgumentException("잔액이 부족합니다.");
+        }
 
         return new BankAccount(accountNumber, owner, result);
     }

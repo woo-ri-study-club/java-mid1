@@ -18,7 +18,10 @@ public class MissionMain {
         user2 = user2.withdraw(5000);
         System.out.println(user2); // 5000 -> 0
 
-        //출금 테스트(비정상 출금)
-        user1 = user1.withdraw(101); //잔액 부족
+        //출금 테스트(비정상 출금 - 0이하의 출금)
+//        user1 = user1.withdraw(0); //올바르지 않은 출금액
+
+        //출금 테스트(비정상 출금 - 잔액 부족)
+//        user1 = user1.withdraw(101); //잔액 부족
     }
 }
