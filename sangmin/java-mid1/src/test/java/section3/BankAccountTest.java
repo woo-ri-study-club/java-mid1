@@ -26,7 +26,7 @@ class BankAccountTest {
         //when & then
         assertThrows(IllegalArgumentException.class,
                 () -> bankAccount.deposit(-1000),
-                "음수 금액을 입금할 수 없습니다."
+                "0원 이하의 금액을 입금할 수 없습니다."
         );
     }
 
@@ -49,7 +49,7 @@ class BankAccountTest {
         //when & then
         assertThrows(IllegalArgumentException.class,
                 () -> bankAccount.withdraw(-1000),
-                "음수 금액을 출금할 수 없습니다."
+                "0원 이하의 금액을 출금할 수 없습니다."
         );
     }
 

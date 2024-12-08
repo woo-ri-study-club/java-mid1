@@ -13,14 +13,14 @@ public class BankAccount {
 
     public BankAccount deposit(double amount) {
         if (amount < 0) {
-            throw new IllegalArgumentException("음수 금액을 입금할 수 없습니다.");
+            throw new IllegalArgumentException("0원 이하의 금액을 입금할 수 없습니다.");
         }
         return new BankAccount(accountNumber, owner, balance + amount);
     }
 
     public BankAccount withdraw(double amount) {
         if (amount < 0) {
-            throw new IllegalArgumentException("음수 금액을 출금할 수 없습니다.");
+            throw new IllegalArgumentException("0원 이하의 금액을 출금할 수 없습니다.");
         }
         if (balance < amount) {
             throw new IllegalArgumentException("잔액이 부족합니다.");
