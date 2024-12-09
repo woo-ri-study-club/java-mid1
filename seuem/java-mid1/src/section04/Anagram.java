@@ -13,26 +13,20 @@ public class Anagram {
         str1 = str1.toLowerCase();
         str2 = str2.toLowerCase();
 
-        StringBuilder sb1 = new StringBuilder(str1);
-        StringBuilder sb2 = new StringBuilder(str2);
+        str1 = str1.replace(" ", "");
+        str2 = str2.replace(" ", "");
 
-        for (int i = 0; i < sb2.length(); i++) {
-            String string2 = String.valueOf(sb2.charAt(i));
-            if (string2.equals(" ")) {
-                sb2.deleteCharAt(i);
-                i--;
-                continue;
-            }
-            int an = sb1.indexOf(string2);
+        StringBuilder sb1 = new StringBuilder(str1);
+
+        for (int i = 0; i < str2.length(); i++) {
+            int an = sb1.indexOf(str2.substring(i, i + 1));
             if (an == -1) {
                 return false;
             }
             sb1.deleteCharAt(an);
         }
 
-        String trim = String.valueOf(sb1);
-        String answer = trim.trim();
-        return answer.isEmpty();
+        return sb1.isEmpty();
     }
 
 }
