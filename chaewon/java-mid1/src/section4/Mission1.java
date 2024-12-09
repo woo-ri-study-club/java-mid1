@@ -10,7 +10,7 @@ public class Mission1 {
         System.out.println("애너그램 여부: " + isAnagram(str1, str2));
     }
 
-    static boolean isAnagram(String str1, String str2) {
+    private static boolean isAnagram(String str1, String str2) {
         char[] str1Array = str1.strip().toLowerCase().toCharArray();
         char[] str2Array = str2.strip().toLowerCase().toCharArray();
 
