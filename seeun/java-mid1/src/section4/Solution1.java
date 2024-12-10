@@ -14,8 +14,8 @@ public class Solution1 {
     }
 
     public static boolean isAnagram(String str1, String str2) {
-        str1 = str1.toLowerCase().replace(" ", "");
-        str2 = str2.toLowerCase().replace(" ", "");
+        str1 = str1.toLowerCase().replaceAll("\\s+", "");
+        str2 = str2.toLowerCase().replaceAll("\\s+", "");
 
         if(str1.length() != str2.length()){
             return false;
@@ -32,12 +32,6 @@ public class Solution1 {
                 return false;
             }
             charCount.put(ch, charCount.get(ch) - 1);
-        }
-
-        for (int count : charCount.values()) {
-            if(count != 0){
-                return false;
-            }
         }
 
         return true;
