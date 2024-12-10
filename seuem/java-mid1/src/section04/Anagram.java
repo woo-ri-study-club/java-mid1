@@ -1,32 +1,34 @@
 package section04;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Anagram {
     public static void main(String[] args) {
         String str1 = "  Li  sten   ";
         String str2 = "Sil  ent";
 
-        System.out.println("answer = " + anagram(str1, str2));
+        System.out.println("answer = " + isItAnagram(str1, str2));
     }
 
-    private static boolean anagram(String str1, String str2) {
+    private static boolean isItAnagram(String str1, String str2) {
 
         str1 = str1.toLowerCase();
         str2 = str2.toLowerCase();
 
-        str1 = str1.replace(" ", "");
-        str2 = str2.replace(" ", "");
+        str1 = str1.toLowerCase().replaceAll("\\s+", "");
+        str2 = str2.toLowerCase().replaceAll("\\s+", ""); //이게 /t /n이런것도 뺴주나봄!
 
-        StringBuilder sb1 = new StringBuilder(str1);
+        Map<Character, Integer> map1 = new HashMap<>();
+        Map<Character, Integer> map2 = new HashMap<>();
 
-        for (int i = 0; i < str2.length(); i++) {
-            int an = sb1.indexOf(str2.substring(i, i + 1));
-            if (an == -1) {
-                return false;
-            }
-            sb1.deleteCharAt(an);
+        for (int i = 0; i < str1.length(); i++) {
+            map1.put(str1.charAt(i), map1.getOrDefault(str1.charAt(i), 0) + 1);
+            map2.put(str2.charAt(i), map2.getOrDefault(str2.charAt(i), 0) + 1);
         }
 
-        return sb1.isEmpty();
+        return map1.equals(map2);
+
     }
 
 }
