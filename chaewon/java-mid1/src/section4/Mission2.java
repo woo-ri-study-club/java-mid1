@@ -31,7 +31,7 @@ public class Mission2 {
             }
         }
 
-        return str.substring(startIndex, maxLength - startIndex);
+        return str.substring(startIndex, maxLength + startIndex);
     }
 
 }
