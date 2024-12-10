@@ -9,8 +9,8 @@ public class StringUtils {
             return "";
         }
 
-        int start = 0;
-        int end = 0;
+        int maxStart = 0;
+        int maxEnd = 0;
 
         for (int i = 0; i < str.length(); i++) {
             int len1 = expandAroundCenter(str, i, i);
@@ -18,19 +18,16 @@ public class StringUtils {
 
             int len = Math.max(len1, len2);
 
-            if (len > end - start) {
-                start = i - (len - 1) / 2;
-                end = i + len / 2;
+            if (len > maxEnd - maxStart) {
+                maxStart = i - (len - 1) / 2;
+                maxEnd = i + len / 2;
             }
         }
 
-        return str.substring(start, end + 1);
+        return str.substring(maxStart, maxEnd + 1);
     }
 
-    private static int expandAroundCenter(String str, int leftIndex,  int rightIndex) {
-
-        int left = leftIndex;
-        int right = rightIndex;
+    private static int expandAroundCenter(String str, int left,  int right) {
 
         while (left >= 0 && right < str.length() && str.charAt(left) == str.charAt(right)) {
             left--;
