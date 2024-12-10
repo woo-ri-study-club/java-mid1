@@ -2,26 +2,36 @@ package section4;
 
 public class Mission2 {
     public static void main(String[] args) {
-        String str = "babad";
+        String str = "abcbaabcb";
 
-        for (int i = 0; i < str.length(); i++) {
-            for (int j = str.length(); j >= i ; j--) {
-                if (isOalindrome(str, i, j - 1)) {
-                    System.out.println(str.substring(i, j));
+        System.out.println(longestPalindrome(str));
+    }
 
-                    return;
+    private static String longestPalindrome(String str) {
+        int length = str.length();
+        boolean[][] checkPalindrome = new boolean[length][length];
+
+        int startIndex = 0;
+        int maxLength = 0;
+
+        for (int sublength = 1; sublength <= length; sublength++) {
+            for (int i = 0; i <= length - sublength; i++) {
+                int j = i + sublength - 1;
+
+                switch (sublength) {
+                    case 1 -> checkPalindrome[i][j] = true;
+                    case 2 -> checkPalindrome[i][j] = (str.charAt(i) == str.charAt(j));
+                    default -> checkPalindrome[i][j] = (str.charAt(i) == str.charAt(j)) && checkPalindrome[i + 1][j - 1];
+                }
+
+                if (checkPalindrome[i][j] && (sublength > maxLength)) {
+                    startIndex = i;
+                    maxLength = sublength;
                 }
             }
         }
+
+        return str.substring(startIndex, maxLength - startIndex);
     }
 
-    private static boolean isOalindrome(String str, int startIndex, int endIndex) {
-        while (startIndex <= endIndex) {
-            if (str.charAt(startIndex++) != str.charAt(endIndex--)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
 }
