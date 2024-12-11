@@ -1,4 +1,4 @@
-package study.section04;
+package section04;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,8 +18,8 @@ public class Anagram {
     Map<Character, Integer> str1Map = new HashMap<>();
     Map<Character, Integer> str2Map = new HashMap<>();
 
-    str1 = str1.toLowerCase();
-    str2 = str2.toLowerCase();
+    str1 = str1.toLowerCase().replaceAll("[^a-z]", "");
+    str2 = str2.toLowerCase().replaceAll("[^a-z]", "");
 
     if (str1.length() != str2.length()) {
       return false;

@@ -1,16 +1,16 @@
-package study.section04;
+package section04;
 
 public class Palindrome {
 
   public static void main(String[] args) {
-    String input = "babad";
+    String input = "";
     String result = solution(input);
     System.out.println("result = " + result);
   }
 
   public static String solution(String input) {
-    if (input == null || input.length() < 1) {
-      return "";
+    if (input == null || input.length() <= 1) {
+      return input;
     }
 
     int start = 0; // 가장 긴 팰린드롬 시작 인덱스
