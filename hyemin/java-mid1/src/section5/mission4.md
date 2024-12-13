@@ -64,7 +64,9 @@ Class 클래스를 통해 클래스의 이름, 선언된 메서드나 필드, �
 
 ```java
     // Class 객체 얻기
-    Class clazz = Class.forName("java.lang.String");
+    Class clazz = Class.forName("java.lang.String"); // 문자열로 조회
+    //Class clazz = String.class; // 클래스에서 조회
+    //Class clazz = new String().getClass();// 인스턴스에서 조회
 
     // 클래스 이름 출력
     System.out.println(clazz.getName());
