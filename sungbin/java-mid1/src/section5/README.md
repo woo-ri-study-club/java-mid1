@@ -24,6 +24,12 @@ int num = 5; // 기본형
 Integer wrappedNum = Integer.valueOf(num); // 래퍼 클래스
 ```
 
+다음으로 주요 메서드를 알아보자.
+
+- parseXxx(String): 문자열을 해당 기본형 값으로 변환합니다.
+- valueOf(String | Number): 문자열을 해당 래퍼 클래스 객체로 변환합니다.
+- xxxValue(): 객체를 다른 기본형 값으로 변환합니다.
+
 래퍼 클래스는 다음과 같은 장점을 제공합니다.
 
 - 객체로서의 기능 활용: 메서드를 통해 추가적인 기능 사용 가능.
