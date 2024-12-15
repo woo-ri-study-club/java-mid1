@@ -11,7 +11,7 @@ public class ATMService {
 
     public void registerAccount(Account account) {
         if (account == null) {
-            throw new IllegalArgumentException("계좌가");
+            throw new IllegalArgumentException("올바르지 못한 계좌입니다.");
         }
 
         if (accounts.containsKey(account.getAccountNumber())) {
