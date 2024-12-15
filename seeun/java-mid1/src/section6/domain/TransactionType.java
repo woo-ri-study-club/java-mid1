@@ -3,7 +3,7 @@ package section6.domain;
 public enum TransactionType {
     DEPOSIT("입금") {
         @Override
-        public void execute(Account sender, Account receiver, int amount) {
+        public void execute(Account sender, Account receiver, long amount) {
             verifySingleTransaction(sender);
             verifyAmount(amount);
             sender.deposit(amount);
@@ -11,7 +11,7 @@ public enum TransactionType {
     },
     WITHDRAW("출금") {
         @Override
-        public void execute(Account sender, Account receiver, int amount) {
+        public void execute(Account sender, Account receiver, long amount) {
             verifySingleTransaction(sender);
             verifyAmount(amount);
             verifyBalance(sender, amount);
@@ -20,7 +20,7 @@ public enum TransactionType {
     },
     TRANSFER("송금") {
         @Override
-        public void execute(Account sender, Account receiver, int amount) {
+        public void execute(Account sender, Account receiver, long amount) {
             verifyCrossTransaction(sender, receiver);
             verifyAmount(amount);
             verifyBalance(sender, amount);
@@ -35,7 +35,7 @@ public enum TransactionType {
         this.description = description;
     }
 
-    public abstract void execute(Account sender, Account receiver, int amount);
+    public abstract void execute(Account sender, Account receiver, long amount);
 
     protected void verifySingleTransaction(Account account){
         verifyAccountExists(account);
@@ -62,13 +62,13 @@ public enum TransactionType {
         }
     }
 
-    protected void verifyBalance(Account account, int amount) {
+    protected void verifyBalance(Account account, long amount) {
         if (account.getBalance() < amount) {
             throw new IllegalStateException("잔액이 부족합니다.");
         }
     }
 
-    protected void verifyAmount(int amount) {
+    protected void verifyAmount(long amount) {
         if (amount <= 0) {
             throw new IllegalArgumentException("1원 이상 거래 가능합니다.");
         }

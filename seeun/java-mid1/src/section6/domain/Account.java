@@ -2,16 +2,16 @@ package section6.domain;
 
 public class Account {
     private final String accountNumber;
-    private double balance;
+    private long balance;
     private AccountStatus status;
 
-    public Account(String accountNumber, double balance) {
+    public Account(String accountNumber, long balance) {
         this.accountNumber = accountNumber;
         this.balance = balance;
         this.status = AccountStatus.ACTIVE;
     }
 
-    public void executeTransaction(TransactionType type, Account receiver, int amount) {
+    public void executeTransaction(TransactionType type, Account receiver, long amount) {
         type.execute(this, receiver, amount);
     }
 
@@ -19,11 +19,11 @@ public class Account {
         status = accountStatus;
     }
 
-    public void deposit(int amount) {
+    public void deposit(long amount) {
         balance += amount;
     }
 
-    public void withdraw(int amount) {
+    public void withdraw(long amount) {
         balance -= amount;
     }
 
@@ -31,7 +31,7 @@ public class Account {
         return status;
     }
 
-    public double getBalance() {
+    public long getBalance() {
         return balance;
     }
 }
