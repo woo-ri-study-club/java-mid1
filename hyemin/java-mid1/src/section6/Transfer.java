@@ -36,9 +36,7 @@ public class Transfer {
     }
 
     private void printResult() {
-        if (status == TransferStatus.COMPLETED) {
-            System.out.println("송금이 완료되었습니다: " + amount + "원");
-        }
+        System.out.println(status.getDescription() + ": " + amount + "원");
     }
 
     public TransferStatus getStatus() {

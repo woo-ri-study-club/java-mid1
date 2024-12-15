@@ -16,11 +16,13 @@ public class BankAccount {
     }
 
     public void withdraw(BigDecimal amount) {
-        if (amount.compareTo(balance) <= 0) {
-            balance = balance.subtract(amount);
-        } else {
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("출금할 금액은 0보다 커야 합니다.");
+        }
+        if (amount.compareTo(balance) > 0) {
             throw new IllegalArgumentException("잔액이 부족합니다.");
         }
+        balance = balance.subtract(amount);
     }
 
     public void deposit(BigDecimal amount) {

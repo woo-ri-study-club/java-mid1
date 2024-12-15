@@ -7,7 +7,7 @@ public class ATM {
         BankAccount senderAccount = new BankAccount("123-456-789", new BigDecimal("100000"));
         BankAccount receiverAccount = new BankAccount("987-654-321", new BigDecimal("50000"));
 
-        Transfer transfer = new Transfer(senderAccount, receiverAccount, new BigDecimal("120000"));
+        Transfer transfer = new Transfer(senderAccount, receiverAccount, new BigDecimal("20000"));
 
         transfer.execute();
 
