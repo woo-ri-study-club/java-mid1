@@ -11,7 +11,4 @@ public enum AccountStatus {
         this.status = status;
     }
 
-    public String getStatus() {
-        return status;
-    }
 }
