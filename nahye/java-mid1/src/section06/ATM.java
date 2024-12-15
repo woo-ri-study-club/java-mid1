@@ -35,36 +35,57 @@ public class ATM {
     }
 
     private void processTransaction(Account myAccount, TransactionType type) {
-        long amount;
         try {
             switch (type) {
                 case DEPOSIT:
-                    amount = processForInputAmount(myAccount, type);
-                    myAccount.deposit(amount);
-                    System.out.println(myAccount);
+                    processDeposit(myAccount);
                     break;
                 case WITHDRAW:
-                    amount = processForInputAmount(myAccount, type);
-                    myAccount.withdraw(amount);
-                    System.out.println(myAccount);
+                    processWithdraw(myAccount);
                     break;
                 case TRANSFER:
-                    Account accountToTransfer = getAccountToTransfer(myAccount);
-                    amount = processForInputAmount(myAccount, type);
-                    myAccount.transfer(amount, accountToTransfer);
-                    System.out.println(myAccount);
+                    processTransfer(myAccount);
+                    processBalance(myAccount);
                     break;
                 case BALANCE:
-                    System.out.println(myAccount);
+                    processBalance(myAccount);
                     break;
                 case EXIT:
-                    System.out.println("ATM 거래를 종료합니다.");
-                    System.exit(0);
+                    processExit();
+                    break;
                 default:
+                    throw new IllegalArgumentException("지원하지 않는 거래 유형입니다.");
             }
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    private void processDeposit(Account myAccount) {
+        long amount = processForInputAmount(myAccount, TransactionType.DEPOSIT);
+        myAccount.deposit(amount);
+        processBalance(myAccount);
+    }
+
+    private void processWithdraw(Account myAccount) {
+        long amount = processForInputAmount(myAccount, TransactionType.WITHDRAW);
+        myAccount.withdraw(amount);
+        processBalance(myAccount);
+    }
+
+    private void processTransfer(Account myAccount) {
+        Account accountToTransfer = getAccountToTransfer(myAccount);
+        long amount = processForInputAmount(myAccount, TransactionType.TRANSFER);;
+        myAccount.transfer(amount, accountToTransfer);
+    }
+
+    private void processBalance(Account myAccount) {
+        System.out.println(myAccount);
+    }
+
+    private void processExit() {
+        System.out.println("ATM 거래를 종료합니다.");
+        System.exit(0);
     }
 
     private Account getAccountToTransfer(Account myAccount) {
