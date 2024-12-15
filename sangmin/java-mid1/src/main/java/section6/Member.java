@@ -27,7 +27,7 @@ public class Member {
         return account.getAccountNumber();
     }
 
-    public int getBalance() {
+    public long getBalance() {
         return account.getBalance();
     }
 

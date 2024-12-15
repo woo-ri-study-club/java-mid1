@@ -18,15 +18,15 @@ public class Main {
         long targetAccountNumber = targetMember.getAccountNumber();
 
         Transaction depositTransaction = TransactionType.handler(TransactionType.DEPOSIT);
-        int depositedBalance =  atm.executeTransaction(depositTransaction, 1000);
+        long depositedBalance =  atm.executeTransaction(depositTransaction, 1000);
         System.out.println("depositedBalance = " + depositedBalance); // 잔금 1000원
 
         Transaction withdrawTransaction = TransactionType.handler(TransactionType.WITHDRAW);
-        int withdrawnBalance =  atm.executeTransaction(withdrawTransaction, 500);
+        long withdrawnBalance =  atm.executeTransaction(withdrawTransaction, 500);
         System.out.println("withdrawnBalance = " + withdrawnBalance); // 잔금 500원
 
         Transaction transferTransaction = TransactionType.handler(TransactionType.TRANSFER);
-        int transferredBalance =  atm.executeTransaction(transferTransaction, 200, targetAccountNumber);
+        long transferredBalance =  atm.executeTransaction(transferTransaction, 200, targetAccountNumber);
         System.out.println("transferredBalance = " + transferredBalance); // 잔금 300원
     }
 }

@@ -1,7 +1,5 @@
 package section6;
 
-import static section6.TransactionType.*;
-
 public class Atm {
     private final Member member;
     private final Members members;
@@ -11,31 +9,40 @@ public class Atm {
         this.members = members;
     }
 
-    public int deposit(long targetAccountNumber, int amount) {
-        Member targetMember = members.findMember(targetAccountNumber);
+    public long deposit(long targetAccountNumber, int amount) {
+        Member targetMember = findTargetMember(targetAccountNumber);
         targetMember.deposit(amount);
         return targetMember.getBalance();
     }
 
-    public int withdraw(long targetAccountNumber, int amount) {
-        Member targetMember = members.findMember(targetAccountNumber);
+    public long withdraw(long targetAccountNumber, int amount) {
+        Member targetMember = findTargetMember(targetAccountNumber);
         targetMember.withdraw(amount);
         return targetMember.getBalance();
     }
 
-    public int transfer(long targetAccountNumber, int amount) {
-        Member targetMember = members.findMember(targetAccountNumber);
+    public long transfer(long targetAccountNumber, int amount) {
+        Member targetMember = findTargetMember(targetAccountNumber);
         member.withdraw(amount);
-        targetMember.deposit(amount);
+        try {
+            targetMember.deposit(amount);
+        } catch (Exception e) {
+            member.deposit(amount);
+            throw e;
+        }
         return member.getBalance();
     }
 
-    public int executeTransaction(Transaction transaction, int amount, long targetAccountNumber) {
+    public long executeTransaction(Transaction transaction, int amount, long targetAccountNumber) {
         return transaction.execute(this, amount, targetAccountNumber);
     }
 
-
-    public int executeTransaction(Transaction transaction, int amount) {
+    public long executeTransaction(Transaction transaction, int amount) {
         return this.executeTransaction(transaction, amount, member.getAccountNumber());
+    }
+
+    private Member findTargetMember(long targetAccountNumber) {
+        Member targetMember = members.findMember(targetAccountNumber);
+        return targetMember;
     }
 }
