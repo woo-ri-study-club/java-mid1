@@ -3,6 +3,7 @@ package section6;
 import section6.domain.account.entity.BankAccount;
 import section6.domain.account.service.ATM;
 import section6.domain.member.entity.Member;
+import section6.global.common.log.ConsoleTransactionLogger;
 
 import static section6.domain.account.type.TransactionType.TRANSFER;
 import static section6.domain.account.type.TransactionType.WITHDRAW;
@@ -18,7 +19,7 @@ public class Main {
         BankAccount account2 = new BankAccount(member2, 50000);
 
         // ATM 생성
-        ATM atm = new ATM();
+        ATM atm = new ATM(new ConsoleTransactionLogger());
         atm.addAccount(account1);
         atm.addAccount(account2);
 

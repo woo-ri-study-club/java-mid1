@@ -2,6 +2,7 @@ package section6.domain.account.service;
 
 import section6.domain.account.entity.BankAccount;
 import section6.domain.account.type.TransactionType;
+import section6.global.common.log.TransactionLogger;
 
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -9,6 +10,12 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ATM {
 
     private final ConcurrentHashMap<String, BankAccount> accounts = new ConcurrentHashMap<>();
+
+    private final TransactionLogger logger;
+
+    public ATM(TransactionLogger logger) {
+        this.logger = logger;
+    }
 
     public void addAccount(BankAccount account) {
         accounts.put(account.getAccountHolder().id(), account);
@@ -20,17 +27,16 @@ public class ATM {
         switch (type) {
             case DEPOSIT:
                 source.deposit(amount);
-                System.out.println(source.getAccountHolder().name() + " (" + source.getAccountHolder().id() + ") 님의 계좌에 " + amount + " 입금되었습니다.");
+                logger.logDeposit(source, amount);
                 break;
             case WITHDRAW:
                 source.withdraw(amount);
-                System.out.println(source.getAccountHolder().name() + " (" + source.getAccountHolder().id() + ") 님의 계좌에서 " + amount + " 출금되었습니다.");
+                logger.logWithdraw(source, amount);
                 break;
             case TRANSFER:
                 BankAccount target = Objects.requireNonNull(accounts.get(targetId), "송금 대상 계좌가 존재하지 않습니다.");
                 source.transferTo(target, amount);
-                System.out.println(source.getAccountHolder().name() + " (" + source.getAccountHolder().id() + ") 님이 "
-                        + target.getAccountHolder().name() + " (" + target.getAccountHolder().id() + ") 님에게 " + amount + " 송금하였습니다.");
+                logger.logTransfer(source, target, amount);
                 break;
             default:
                 throw new UnsupportedOperationException("지원되지 않는 거래 유형입니다.");
