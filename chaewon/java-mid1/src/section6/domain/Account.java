@@ -12,24 +12,28 @@ public class Account {
         this.accountNumber = accountNumber;
     }
 
-    public void deposit(long value){
-        if(value <= 0){
+    public void deposit(long value) {
+        if (value <= 0) {
             throw new IllegalArgumentException("입금액은 0원 이하일 수 없습니다.");
         }
 
         balance += value;
     }
 
-    public void withdraw(long value){
-        if(value <= 0){
+    public void withdraw(long value) {
+        if (value <= 0) {
             throw new IllegalArgumentException("출금액은 0원 이하일 수 없습니다.");
         }
 
-        if(balance < value){
+        if (balance < value) {
             throw new IllegalArgumentException("잔액이 부족합니다.");
         }
 
         balance -= value;
+    }
+
+    public String serviceLog(Process process, String accountNumber, long value) {
+        return "[" + process + "] 계좌번호: " + accountNumber + " 잔액: " + value;
     }
 
     public String getAccountNumber() {
