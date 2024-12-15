@@ -11,7 +11,7 @@ public class ATMService {
 
     public void registerAccount(Account account) {
         if (account == null) {
-            throw new IllegalArgumentException("등록할 계좌가 비어있습니다.");
+            throw new IllegalArgumentException("계좌가");
         }
 
         if (accounts.containsKey(account.getAccountNumber())) {
@@ -46,6 +46,10 @@ public class ATMService {
         printLog(toAccount, Process.TRANSFER);
     }
 
+    public void abstractAccout(String accountNumber){
+        accounts.remove(accountNumber);
+    }
+
     private Account findAccount(String accountNumber) {
         Account account = accounts.get(accountNumber);
         if (account == null) {
@@ -58,6 +62,5 @@ public class ATMService {
     private void printLog(Account account, Process process) {
         System.out.println(account.serviceLog(process, account.getAccountNumber(), account.getBalance()));
     }
-
 
 }

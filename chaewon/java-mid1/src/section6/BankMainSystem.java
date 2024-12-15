@@ -25,5 +25,8 @@ public class BankMainSystem {
 
         atmService.transfer("110-111", "110-112", 500);
 
+        atmService.abstractAccout("110-111");
+        atmService.abstractAccout("110-112");
+
     }
 }
