@@ -4,8 +4,7 @@ public enum TransactionType {
     DEPOSIT("입금") {
         @Override
         public void execute(Account account, long amount) {
-            verifySingleTransaction(account);
-            verifyAmount(amount);
+            verifySingleTransaction(account, amount);
             account.deposit(amount);
         }
 
@@ -17,8 +16,7 @@ public enum TransactionType {
     WITHDRAW("출금") {
         @Override
         public void execute(Account account, long amount) {
-            verifySingleTransaction(account);
-            verifyAmount(amount);
+            verifySingleTransaction(account, amount);
             verifyBalance(account, amount);
             account.withdraw(amount);
         }
@@ -36,9 +34,7 @@ public enum TransactionType {
 
         @Override
         public void execute(Account sender, Account receiver, long amount) {
-            verifyCrossTransaction(sender, receiver);
-            verifyAmount(amount);
-            verifyBalance(sender, amount);
+            verifyCrossTransaction(sender, receiver, amount);
             sender.withdraw(amount);
             receiver.deposit(amount);
         }
@@ -54,16 +50,20 @@ public enum TransactionType {
 
     public abstract void execute(Account sender, Account receiver, long amount);
 
-    protected void verifySingleTransaction(Account account){
+    protected void verifySingleTransaction(Account account, long amount){
         verifyAccountExists(account);
         verifyAccountStatus(account);
+        verifyAmount(amount);
+
     }
 
-    protected void verifyCrossTransaction(Account sender, Account receiver) {
+    protected void verifyCrossTransaction(Account sender, Account receiver, long amount) {
         verifyAccountExists(sender);
         verifyAccountExists(receiver);
         verifyAccountStatus(sender);
         verifyAccountStatus(receiver);
+        verifyAmount(amount);
+        verifyBalance(sender, amount);
 
     }
 
