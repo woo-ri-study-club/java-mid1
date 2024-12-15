@@ -18,7 +18,6 @@ public class ATM {
                 String accountNumber = input.nextLine();
                 Account myAccount = bank.findAccountByNumber(accountNumber);
 
-
                 System.out.print("원하시는 거래를 입력해주세요 >> ");
                 for (TransactionType type : TransactionType.values()) {
                     System.out.print(type.getDescription() + ", ");
@@ -27,48 +26,43 @@ public class ATM {
                 String selectType = input.nextLine().trim();
 
                 TransactionType type = TransactionType.findByDescription(selectType);
-
-                if (type == TransactionType.EXIT) {
-                    System.out.println("ATM 거래를 종료합니다.");
-                    break;
-                }
                 processTransaction(myAccount, type);
 
-            }catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
         }
     }
 
     private void processTransaction(Account myAccount, TransactionType type) {
-        Long amount;
+        long amount;
         try {
             switch (type) {
                 case DEPOSIT:
-                    amount = processForAmount(myAccount, type);
+                    amount = processForInputAmount(myAccount, type);
                     myAccount.deposit(amount);
                     System.out.println(myAccount);
                     break;
-
                 case WITHDRAW:
-                    amount = processForAmount(myAccount, type);
+                    amount = processForInputAmount(myAccount, type);
                     myAccount.withdraw(amount);
                     System.out.println(myAccount);
                     break;
-
                 case TRANSFER:
                     Account accountToTransfer = getAccountToTransfer(myAccount);
-                    amount = processForAmount(myAccount, type);
+                    amount = processForInputAmount(myAccount, type);
                     myAccount.transfer(amount, accountToTransfer);
                     System.out.println(myAccount);
                     break;
-
                 case BALANCE:
                     System.out.println(myAccount);
                     break;
+                case EXIT:
+                    System.out.println("ATM 거래를 종료합니다.");
+                    System.exit(0);
                 default:
             }
-        }catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -82,11 +76,11 @@ public class ATM {
         return bank.findAccountByNumber(accountNumberToTransfer);
     }
 
-    private Long processForAmount(Account myAccount, TransactionType type) {
+    private long processForInputAmount(Account myAccount, TransactionType type) {
         while (true) {
             try {
                 System.out.print(type.getDescription() + "할 금액을 입력해주세요: ");
-                Long amount = input.nextLong();
+                long amount = input.nextLong();
                 input.nextLine();
                 if (amount <= 0) {
                     throw new IllegalArgumentException("유효한 값이 아닙니다.");

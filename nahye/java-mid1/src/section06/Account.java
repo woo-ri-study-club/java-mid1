@@ -5,22 +5,22 @@ public class Account {
     private String accountNumber;
     private Customer owner;
 
-    private Long balance;
+    private long balance;
 
-    public Account(String accountNumber, Customer owner, Long balance) {
+    public Account(String accountNumber, Customer owner, long balance) {
         this.accountNumber = accountNumber;
         this.owner = owner;
         this.balance = balance;
     }
 
-    public void deposit(Long amount) {
+    public void deposit(long amount) {
         if (amount <= 0) {
             throw new IllegalArgumentException("유효하지 않은 입금액입니다.");
         }
         balance += amount;
     }
 
-    public void withdraw(Long amount) {
+    public void withdraw(long amount) {
         if (amount <= 0) {
             throw new IllegalArgumentException("유효하지 않은 출금액입니다.");
         }
@@ -30,7 +30,7 @@ public class Account {
         balance -= amount;
     }
 
-    public void transfer(Long amount, Account targetAccount) {
+    public void transfer(long amount, Account targetAccount) {
         if (amount <= 0) {
             throw new IllegalArgumentException("유효하지 않은 송금액입니다.");
         }
