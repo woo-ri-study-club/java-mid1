@@ -16,7 +16,6 @@ public class ATM {
 
     public void processTransaction(TransactionType type, String sourceId, String targetId, long amount) {
         BankAccount source = accounts.get(sourceId);
-        BankAccount target = targetId != null ? accounts.get(targetId) : null;
 
         switch (type) {
             case DEPOSIT:
@@ -28,9 +27,10 @@ public class ATM {
                 System.out.println(source.getAccountHolder().name() + " (" + source.getAccountHolder().id() + ") 님의 계좌에서 " + amount + " 출금되었습니다.");
                 break;
             case TRANSFER:
+                BankAccount target = Objects.requireNonNull(accounts.get(targetId), "송금 대상 계좌가 존재하지 않습니다.");
                 source.transferTo(target, amount);
                 System.out.println(source.getAccountHolder().name() + " (" + source.getAccountHolder().id() + ") 님이 "
-                        + Objects.requireNonNull(target).getAccountHolder().name() + " (" + target.getAccountHolder().id() + ") 님에게 " + amount + " 송금하였습니다.");
+                        + target.getAccountHolder().name() + " (" + target.getAccountHolder().id() + ") 님에게 " + amount + " 송금하였습니다.");
                 break;
             default:
                 throw new UnsupportedOperationException("지원되지 않는 거래 유형입니다.");
