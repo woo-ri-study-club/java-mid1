@@ -2,30 +2,27 @@ package section06;
 
 public class Account {
 
-    private int accountNumber;
+    private String accountNumber;
     private Customer owner;
 
-    private int balance;
+    private Long balance;
 
-    public Account(int accountNumber, Customer owner, int balance) {
+    public Account(String accountNumber, Customer owner, Long balance) {
         this.accountNumber = accountNumber;
         this.owner = owner;
         this.balance = balance;
     }
 
-    public void deposit(int amount) {
+    public void deposit(Long amount) {
         if (amount <= 0) {
-            throw new IllegalArgumentException("입금액은 0보다 커야합니다.");
-        }
-        if (amount > balance) {
-            throw new IllegalArgumentException("잔액이 모자랍니다.");
+            throw new IllegalArgumentException("유효하지 않은 입금액입니다.");
         }
         balance += amount;
     }
 
-    public void withdraw(int amount) {
+    public void withdraw(Long amount) {
         if (amount <= 0) {
-            throw new IllegalArgumentException("출금액은 0보다 커야합니다.");
+            throw new IllegalArgumentException("유효하지 않은 출금액입니다.");
         }
         if (amount > balance) {
             throw new IllegalArgumentException("잔액이 모자랍니다.");
@@ -33,9 +30,9 @@ public class Account {
         balance -= amount;
     }
 
-    public void transfer(int amount, Account targetAccount) {
+    public void transfer(Long amount, Account targetAccount) {
         if (amount <= 0) {
-            throw new IllegalArgumentException("송금액은 0보다 커야합니다.");
+            throw new IllegalArgumentException("유효하지 않은 송금액입니다.");
         }
         if (targetAccount == null) {
             throw new IllegalArgumentException("송금할 계좌가 존재하지 않습니다.");
@@ -44,7 +41,7 @@ public class Account {
             throw new IllegalArgumentException("잔액이 모자랍니다.");
         }
         balance -= amount;
-        targetAccount.balance += balance;
+        targetAccount.balance += amount;
     }
 
     @Override
@@ -52,7 +49,7 @@ public class Account {
         return owner.getName()+"님의 잔액은 "+balance+"입니다.";
     }
 
-    public int getAccountNumber() {
+    public String getAccountNumber() {
         return accountNumber;
     }
 }
