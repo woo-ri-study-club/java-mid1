@@ -1,12 +1,14 @@
 package src.section6;
 
+import java.math.BigDecimal;
+
 public class Transfer {
     private final BankAccount sender;
     private final BankAccount receiver;
-    private final double amount;
+    private final BigDecimal amount;
     private TransferStatus status;
 
-    public Transfer(BankAccount sender, BankAccount receiver, double amount) {
+    public Transfer(BankAccount sender, BankAccount receiver, BigDecimal amount) {
         this.sender = sender;
         this.receiver = receiver;
         this.amount = amount;
@@ -14,14 +16,28 @@ public class Transfer {
     }
 
     public void execute() {
+        if (processTransfer()) {
+            status = TransferStatus.COMPLETED;
+        } else {
+            status = TransferStatus.FAILED;
+        }
+        printResult();
+    }
+
+    private boolean processTransfer() {
         try {
             sender.withdraw(amount);
             receiver.deposit(amount);
-            status = TransferStatus.COMPLETED;
-            System.out.println("송금이 완료되었습니다: " + amount + "원");
+            return true;
         } catch (IllegalArgumentException e) {
-            status = TransferStatus.FAILED;
             System.out.println("송금 실패: " + e.getMessage());
+            return false;
+        }
+    }
+
+    private void printResult() {
+        if (status == TransferStatus.COMPLETED) {
+            System.out.println("송금이 완료되었습니다: " + amount + "원");
         }
     }
 

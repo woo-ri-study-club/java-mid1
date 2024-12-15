@@ -1,11 +1,13 @@
 package src.section6;
 
-public class ATMMain {
-    public static void main(String[] args) {
-        BankAccount senderAccount = new BankAccount("123-456-789", 100000);
-        BankAccount receiverAccount = new BankAccount("987-654-321", 50000);
+import java.math.BigDecimal;
 
-        Transfer transfer = new Transfer(senderAccount, receiverAccount, 20000);
+public class ATM {
+    public static void main(String[] args) {
+        BankAccount senderAccount = new BankAccount("123-456-789", new BigDecimal("100000"));
+        BankAccount receiverAccount = new BankAccount("987-654-321", new BigDecimal("50000"));
+
+        Transfer transfer = new Transfer(senderAccount, receiverAccount, new BigDecimal("120000"));
 
         transfer.execute();
 
