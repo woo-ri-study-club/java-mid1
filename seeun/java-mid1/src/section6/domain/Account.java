@@ -11,6 +11,10 @@ public class Account {
         this.status = AccountStatus.ACTIVE;
     }
 
+    public void executeTransaction(TransactionType type, long amount) {
+        type.execute(this, amount);
+    }
+
     public void executeTransaction(TransactionType type, Account receiver, long amount) {
         type.execute(this, receiver, amount);
     }
