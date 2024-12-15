@@ -10,4 +10,28 @@ public class Account {
         this.balance = balance;
         this.status = AccountStatus.ACTIVE;
     }
+
+    public void executeTransaction(TransactionType type, Account receiver, int amount) {
+        type.execute(this, receiver, amount);
+    }
+
+    public void changeStatus(AccountStatus accountStatus) {
+        status = accountStatus;
+    }
+
+    public void deposit(int amount) {
+        balance += amount;
+    }
+
+    public void withdraw(int amount) {
+        balance -= amount;
+    }
+
+    public AccountStatus getStatus() {
+        return status;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
 }
