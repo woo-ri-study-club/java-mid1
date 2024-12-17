@@ -58,6 +58,21 @@ System.out.println("뉴욕 시간: " + newYorkTime);
 
 이처럼 ZonedDateTime은 국제화된 시스템에서 유용합니다.
 
+#### ZoneId와 Offset
+
+- ZoneId: 특정 시간대의 식별자로, "Asia/Seoul"이나 "America/New_York"처럼 사람이 읽을 수 있는 형태로 사용됩니다.
+  - ZoneId.of("Asia/Seoul")처럼 사용하면 해당 지역의 시간대를 기준으로 날짜와 시간을 다룰 수 있습니다.
+- ZoneOffset: UTC(협정 세계시) 기준의 시간 차이를 나타냅니다.
+  - ex) ZoneOffset.of("+09:00")는 UTC에서 9시간 빠른 시간대를 나타냅니다.
+
+이 두 가지는 서로 연결되어 사용할 수 있습니다. ZonedDateTime은 시간대 정보를 ZoneId로 설정하지만, 내부적으로는 UTC와의 차이를 ZoneOffset을 통해 계산합니다.
+
+```java
+ZoneOffset offset = ZoneOffset.of("+09:00");
+ZonedDateTime timeWithOffset = ZonedDateTime.now(offset);
+System.out.println("Offset 기반 시간: " + timeWithOffset);
+```
+
 ---
 
 ### 5. Instant
