@@ -13,7 +13,7 @@
 
 기본적인 날짜와 시간을 표현할 때는 LocalDateTime을 사용합니다.
 ## 1. LocalDateTime
-
+특정 지역의 날짜와 시간만 고려할 때 사용합니다.
 ```
 LocalDateTime ldt = LocalDateTime.now(); // 현재 날짜 시간을 기준으로 생성
 LocalDateTime ldt = LocalDateTime.of(2020,1,1); // 지정된 날짜를 기준으로 생성
@@ -34,7 +34,12 @@ ldt.isEqual(LocalDateTime.now());  // ldt가 현재시간과 같으면 true를 �
 
 이제 시간대 정보를 포함한 날짜와 시간을 다루는 방법을 알아보겠습니다.
 ## 2. ZonedDateTime
-ZonedDateTime은 "Asia/Seoul"같은 타임존을 포함하고 있습니다.
+ZonedDateTime은 "Asia/Seoul"같은 타임존을 포함하고 있습니다.  
+타임존은 ZoneId라는 클래스에 저장되어있습니다.
+```
+ZoneId.of() // 타임존을 직접 제공해서 ZoneId를 반환한다.
+ZoneId.systemDefault(); //시스템이 사용하는 기본 ZoneId를 반환한다.
+```
 ```
 // 특정 타임존의 현재 시간 얻기
 ZonedDateTime tokyoTime = ZonedDateTime.now(ZoneId.of("Asia/Tokyo"));
@@ -58,6 +63,10 @@ ZoneOffset은 `+01:00`처럼 UTC(협정 세계시)와의 시간 차이인 오프
 ## 3. Instant
 Instant는 UTC(협정 세계시)를 기준으로 하는, 시간의 한 지점을 나타냅니다.
 날짜와 시간 계산에 사용할 때는 적합하지않고, 전 세계적인 시간 기준 필요시에 사용합니다.
+예를 들어 로그 기록이나 타임스탬프, 서버간의 동기화 등에 사용합니다.
+데이터베이스에 날짜와 시간 정보를 저장하거나, 다른 시스템과 날짜와 시간 정보를 교환할 때 사용하면
+모든 시스템에서 동일한 기준점을 사용하게 되므로 데이터의 일관성을 유지할수있습니다.
+
 ```
 // UTC 기준 현재시간의 Instant 생성
 Instant now = Instant.now(); 
@@ -81,6 +90,8 @@ Instant 내부에는 초데이터만 들어있으므로 초 계산을 할 수있
 plusSecond(); // 초를 더한다.
 ```
 
+
+
 ## 4. Duration과 Period
 시간의 기간, 시간의 간격을 계산하는 클래스입니다.
 
@@ -94,7 +105,8 @@ Duration duration3 = Duration.ofMinutes(30);  // 30분
 // 두 시간 사이의 차이 계산
 Duration duration = Duration.between(start, end);
 ```
-
+- 계산에 사용  
+  1:00에 30분을 더하면 1:30이 된다. 라고 표현할때 특정시간에 30분이라는 시간(시간의 간격)을 더할 수 있다.
 ### Period
 두 날짜 사이의 간격을 년, 월, 일 단위로 나타냅니다.
 ```
@@ -105,6 +117,8 @@ Period period3 = Period.ofDays(15);      // 15일
 // 두 날짜 사이의 차이 계산
 Period period = Period.between(startDate, endDate);
 ```
+- 계산에 사용  
+  2030년 1월 1일에 10일을 더하면 2030년 1월 11일이 됩니다.
 
 ## 5. 날짜와 시간의 핵심 인터페이스 
 자바의 날짜와 시간 API에는 몇 가지 핵심 인터페이스가 있습니다.
