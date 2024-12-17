@@ -75,6 +75,9 @@ ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
 System.out.println("서울의 현재 시간: " + zonedDateTime);
 ```
 위 코드는 서울의 현재 시간을 가져옵니다. 타임존을 활용하면 사용자의 위치에 따라 정확한 시간 정보를 알 수 있습니다.
+`ZoneId.systemDefault()` : 시스템이 사용하는 기본 `ZoneId` 를 반환하며 각 PC 환경 마다 다른 결과가 나올 수 있습니다.
+`ZoneId.of()` : 타임존을 직접 제공해서 `ZoneId` 를 반환합니다.
+`ZoneId` 는 내부에 일광 절약 시간 관련 정보, UTC와의 오프셋 정보를 포함하고 있습니다.
 
 ### 8. Instant 클래스
 Instant 클래스는 GMT(UTC) 기준으로 특정 시점을 표현합니다. 즉, 1970년 1월 1일 0시 0분 0초(UTC)부터 경과된 시간을 초와 나노초 단위로 표현합니다.
