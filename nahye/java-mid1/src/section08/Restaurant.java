@@ -13,14 +13,6 @@ public class Restaurant {
     private Map<Integer, Table> tables = new HashMap<>();
     private Map<Integer, Reservation> reserveList = new HashMap<>();
 
-    public Map<Integer, Table> getTables() {
-        return tables;
-    }
-
-    public Map<Integer, Reservation> getReserveList() {
-        return reserveList;
-    }
-
     static class Table {
         private int tableNumber;
         private TableState tableState;
@@ -115,6 +107,10 @@ public class Restaurant {
         }
     }
 
+
+    public Map<Integer, Reservation> getReserveList() {
+        return reserveList;
+    }
 
     public void reserve(int reservationNumber, String reserveDate, String reserveName, String comment) {
         class TableStatusUpdater {
