@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Restaurant {
     private final List<Table> tables;
@@ -45,10 +46,18 @@ public class Restaurant {
         public int getCapacity() {
             return capacity;
         }
+
+        @Override
+        public String toString() {
+            return "Table{" +
+                    "tableNumber: " + tableNumber +
+                    ", capacity: " + capacity +
+                    '}';
+        }
     }
 
     public class Reservation {
-        private static int idCounter = 1;
+        private static final AtomicInteger idCounter = new AtomicInteger(1);
         private int id;
         private User user;
         private Table table;
@@ -56,35 +65,36 @@ public class Restaurant {
         private int amount;
 
         public Reservation(User user, Table table, LocalDateTime reservationTime, int amount) {
-            this.id = idCounter++;
+            this.id = idCounter.getAndIncrement();
             this.user = user;
             this.table = table;
             this.reservationTime = reservationTime;
             this.amount = amount;
+        }
+
+        @Override
+        public String toString() {
+            return "Reservation{" +
+                    ", name=" + user.getName() +
+                    ", email=" + user.getEmail() +
+                    ", phoneNumber=" + user.getPhoneNumber() +
+                    ", table=" + table +
+                    ", reservationTime=" + reservationTime +
+                    ", amount=" + amount +
+                    '}';
         }
     }
 
     public void addReservation(User user, Table table, LocalDate date, LocalTime time, int amount) {
         LocalDateTime reservationTime = LocalDateTime.of(date, time);
 
-        if (reservations.stream()
-                .anyMatch(r ->
-                        r.user.equals(user) && r.reservationTime.toLocalDate().equals(date)
-                )) {
-            throw new IllegalArgumentException("해당 일에 이미 예약한 이력이 있습니다.");
-        }
+        isAlreadyReserve(user, date);
 
-        if (table.capacity < amount) {
-            throw new IllegalArgumentException("테이블 수용 가능 인원 수보다 많게 예약 할 수 없습니다. (최대 가능 인원: " + table.capacity + "명)");
-        }
+        isAmountAvailable(amount, table.capacity);
 
-        if (amount <= 0) {
-            throw new IllegalArgumentException("1명 이상 예약해야 합니다.");
-        }
+        isAmountMoreThanZero(amount);
 
-        if (!table.isAvailable(reservationTime)) {
-            throw new IllegalArgumentException("이미 해당 시간에 예약된 테이블입니다.");
-        }
+        isAlreadyReservedTable(table, reservationTime);
 
         reservations.add(new Reservation(user, table, reservationTime, amount));
         table.reserve(reservationTime);
@@ -100,13 +110,9 @@ public class Restaurant {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("수정할 예약이 존재하지 않습니다."));
 
-        if (reservation.table.capacity < amount) {
-            throw new IllegalArgumentException("테이블 수용 가능 인원 수보다 많게 예약 할 수 없습니다. (최대 가능 인원: " + reservation.table.capacity + "명)");
-        }
+        isAmountAvailable(amount, reservation.table.capacity);
 
-        if (!reservation.table.isAvailable(newReservationTime)) {
-            throw new IllegalArgumentException("이미 해당 시간에 예약된 테이블입니다.");
-        }
+        isAlreadyReservedTable(reservation.table, newReservationTime);
 
         reservation.table.cancelReservation(oldReservationTime);
 
@@ -130,9 +136,42 @@ public class Restaurant {
     public List<Table> findAvailableTables(LocalDate date, LocalTime time, SearchCondition condition) {
         LocalDateTime reservationTime = LocalDateTime.of(date, time);
 
-        return tables.stream()
+        List<Table> availableTables = tables.stream()
                 .filter(table -> table.isAvailable(reservationTime))
                 .filter(condition::execute)
                 .toList();
+
+        if(availableTables.isEmpty()){
+            throw new IllegalArgumentException("조건에 맞는 예약 가능한 테이블이 없습니다.");
+        }
+
+        return availableTables;
+    }
+
+    private static void isAmountAvailable(int amount, int capacity) {
+        if (capacity < amount) {
+            throw new IllegalArgumentException("테이블 수용 가능 인원 수보다 많게 예약 할 수 없습니다. (최대 가능 인원: " + capacity + "명)");
+        }
+    }
+
+    private void isAlreadyReserve(User user, LocalDate date) {
+        if (reservations.stream()
+                .anyMatch(r ->
+                        r.user.equals(user) && r.reservationTime.toLocalDate().equals(date)
+                )) {
+            throw new IllegalArgumentException("해당 일에 이미 예약한 이력이 있습니다.");
+        }
+    }
+
+    private static void isAmountMoreThanZero(int amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("1명 이상 예약해야 합니다.");
+        }
+    }
+
+    private static void isAlreadyReservedTable(Table table, LocalDateTime reservationTime) {
+        if (!table.isAvailable(reservationTime)) {
+            throw new IllegalArgumentException("이미 해당 시간에 예약된 테이블입니다.");
+        }
     }
 }
