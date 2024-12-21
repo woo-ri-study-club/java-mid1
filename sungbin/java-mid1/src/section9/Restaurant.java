@@ -44,7 +44,7 @@ public class Restaurant {
             }
 
             public boolean overlaps(LocalDateTime startTime, LocalDateTime endTime) {
-                return (startTime.isBefore(this.startTime) && endTime.isAfter(this.endTime));
+                return (startTime.isBefore(this.endTime) && endTime.isAfter(this.startTime));
             }
 
             @Override
