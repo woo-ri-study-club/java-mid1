@@ -6,14 +6,18 @@ import java.util.function.Consumer;
 
 public class Restaurant {
 
-    private static int tableCount = 0;
+    private int tableCount = 0;
 
-    private static class Table{
+    private int generateTableNum() {
+        return ++tableCount;
+    }
+
+    public static class Table{
         private int num;
         private boolean booked;
 
-        public Table() {
-            this.num = ++tableCount;
+        public Table(int num) {
+            this.num = num;
             this.booked = false;
         }
 
@@ -56,7 +60,7 @@ public class Restaurant {
     private List<Reservation> reservations = new ArrayList<>();
 
     public void addTable(){
-        Table newTable = new Table();
+        Table newTable = new Table(generateTableNum());
         tables.add(newTable);
         System.out.println(newTable);
     }
@@ -91,8 +95,12 @@ public class Restaurant {
                 .orElseThrow(() -> new IllegalArgumentException("없는 테이블 번호입니다."));
     }
 
-    public void search(Consumer<List<Reservation>> searcher) {
+    public void searchReservation(Consumer<List<Reservation>> searcher) {
         searcher.accept(this.reservations);
+    }
+
+    public void searchTable(Consumer<List<Table>> searcher) {
+        searcher.accept(this.tables);
     }
 
     public List<Reservation> getReservations() {
