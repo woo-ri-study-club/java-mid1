@@ -6,13 +6,8 @@ import java.util.function.Consumer;
 
 public class Restaurant {
 
-    private List<Table> tables = new ArrayList<>();
-    private List<Reservation> reservations = new ArrayList<>();
-    private int tableCount = 0;
-
-    private int generateTableNum() {
-        return ++tableCount;
-    }
+    private Tables tables = new Tables();
+    private Reservations reservations = new Reservations();
 
     public static class Table{
         private int num;
@@ -62,6 +57,55 @@ public class Restaurant {
         }
     }
 
+    private class Tables {
+        private final List<Table> tables = new ArrayList<>();
+        private int tableCount = 0;
+
+        private int generateTableNum() {
+            return ++tableCount;
+        }
+
+        public void add() {
+            Table newTable = new Table(generateTableNum());
+            tables.add(newTable);
+            System.out.println(newTable);
+        }
+
+        public Table findByNumber(int tableNum) {
+            return tables.stream()
+                    .filter(t -> t.num == tableNum)
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("없는 테이블 번호입니다."));
+        }
+
+        public void search(Consumer<List<Table>> searcher) {
+            searcher.accept(tables);
+        }
+    }
+
+    private class Reservations {
+        private final List<Reservation> reservations = new ArrayList<>();
+
+        public void add(Reservation reservation) {
+            reservations.add(reservation);
+        }
+
+        public void remove(String name, int tableNum) {
+            reservations.removeIf(reservation ->
+                    reservation.name.equals(name) &&
+                            reservation.table.num == tableNum
+            );
+        }
+
+        public void search(Consumer<List<Reservation>> searcher) {
+            searcher.accept(reservations);
+        }
+
+        public List<Reservation> getReservations() {
+            return reservations;
+        }
+    }
+
     public void addReservation(String name, int tableNum) {
 
         class TableStatusUpdater {
@@ -77,7 +121,8 @@ public class Restaurant {
             }
 
         }
-        Table findTable = findTableBy(tableNum);
+
+        Table findTable = tables.findByNumber(tableNum);
         if(findTable.isBooked()){
             throw new IllegalStateException("이미 예약된 테이블입니다.");
         }
@@ -99,40 +144,28 @@ public class Restaurant {
                 System.out.println(table.num + "번 테이블 예약 취소");
             }
         }
-        Table findTable = findTableBy(tableNum);
+        Table findTable = tables.findByNumber(tableNum);
         if(!findTable.isBooked()) {
             throw new IllegalStateException("예약되지 않은 테이블입니다.");
         }
-        reservations.removeIf(reservation ->
-                reservation.name.equals(name) &&
-                        reservation.table.num == tableNum
-        );
+        reservations.remove(name, tableNum);
         new TableStatusUpdater(findTable).cancel();
     }
 
-    public void addTable(){
-        Table newTable = new Table(generateTableNum());
-        tables.add(newTable);
-        System.out.println(newTable);
-    }
-
-    private Table findTableBy(int tableNum) {
-        return tables.stream()
-                .filter(t -> t.num == tableNum)
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("없는 테이블 번호입니다."));
+    public void addTable() {
+        tables.add();
     }
 
     public void searchReservation(Consumer<List<Reservation>> searcher) {
-        searcher.accept(this.reservations);
+        reservations.search(searcher);
     }
 
     public void searchTable(Consumer<List<Table>> searcher) {
-        searcher.accept(this.tables);
+        tables.search(searcher);
     }
 
     public List<Reservation> getReservations() {
-        return reservations;
+        return reservations.getReservations();
     }
 
 }
