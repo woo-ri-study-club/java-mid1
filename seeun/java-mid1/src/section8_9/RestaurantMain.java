@@ -1,7 +1,5 @@
 package section8_9;
 
-import static section8_9.Restaurant.search;
-
 public class RestaurantMain {
 
     public static void main(String[] args) {
@@ -14,9 +12,10 @@ public class RestaurantMain {
         restaurant.addReservation("에약자1", 1);
         restaurant.addReservation("에약자2", 3);
 
-        search(() -> {
-            restaurant.getReservations().forEach(System.out::println);
-        });
+        restaurant.search(reservations ->
+                reservations.forEach(System.out::println)
+        );
+
     }
 
 }

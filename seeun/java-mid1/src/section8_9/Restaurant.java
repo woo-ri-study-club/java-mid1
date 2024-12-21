@@ -2,6 +2,7 @@ package section8_9;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class Restaurant {
 
@@ -90,8 +91,8 @@ public class Restaurant {
                 .orElseThrow(() -> new IllegalArgumentException("없는 테이블 번호입니다."));
     }
 
-    public static void search(ReservationSearcher searcher) {
-        searcher.search();
+    public void search(Consumer<List<Reservation>> searcher) {
+        searcher.accept(this.reservations);
     }
 
     public List<Reservation> getReservations() {
