@@ -13,10 +13,6 @@ public class Restaurant {
         tables = new Tables(tableCount);
     }
 
-    public Tables getTables() {
-        return tables;
-    }
-
     public static class Table {
         private int tableNumber;
         boolean isReserved;
@@ -32,10 +28,6 @@ public class Restaurant {
 
         public void cancel() {
             isReserved = false;
-        }
-
-        public int getTableNumber() {
-            return tableNumber;
         }
 
         public boolean equalsTableNumber(int tableNumber) {
@@ -71,10 +63,6 @@ public class Restaurant {
                     .filter(table -> table.equalsTableNumber(tableNumber))
                     .findFirst()
                     .orElseThrow(() -> new IllegalArgumentException("Table not found"));
-        }
-
-        public List<Table> getTables() {
-            return tables;
         }
     }
 
@@ -134,10 +122,6 @@ public class Restaurant {
     }
 
     public void updateTableStatus(TableStatusUpdater updater) {
-        updater.updateTableStatus();
-    }
-
-    public void execute(TableStatusUpdater updater) {
         updater.updateTableStatus();
     }
 
