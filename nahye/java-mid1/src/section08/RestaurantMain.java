@@ -1,6 +1,7 @@
 package section08;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class RestaurantMain {
     public static void main(String[] args) {
@@ -17,37 +18,38 @@ public class RestaurantMain {
         restaurant.reserve(2,"2024/12/25","LEE","NONE");
         restaurant.reserve(3,"2024/12/25","HONG","NONE");
         restaurant.reserve(4,"2024/12/25","PARK","NONE");
+        restaurant.reserve(5,"2024/12/25","PARK","NONE");
         // 취소
         restaurant.cancel(4);
 
+        System.out.println("\n=== 전체 테이블 현황 ===");
+        restaurant.displayAllTableList();
+
+        System.out.println("\n==== 예약가능한 테이블 ====");
         restaurant.displayAvailableTableList();
+
+        System.out.println("\n==== 전체 예약 현황 ====");
         restaurant.displayReserveList();
 
-
+        System.out.println("\n=== 크리스마스 예약 현황 ===");
         restaurant.showResultByCondition(new Condition() {
             @Override
             public void check() {
-                int count = 0;
-                for (Restaurant.Reservation reservation : restaurant.getReserveList().values()) {
-                    if (reservation.getReserveDate().equals(LocalDate.of(2024, 12, 25))) {
-                        count++;
-                        System.out.println(reservation);
-                    }
-                }
-                System.out.println("2024년 12월 25일의 예약 건수: " + count);
+                LocalDate targetDate = LocalDate.of(2024, 12, 25);
+                List<Restaurant.Reservation> reservations = restaurant.findReservationsByDate(targetDate);
+                reservations.forEach(System.out::println);
+                System.out.println("2024년 12월 25일의 예약 건수: " + reservations.size());
             }
         });
 
+        System.out.println("\n=== 특정 고객 예약 조회 ===");
         restaurant.showResultByCondition(new Condition() {
             @Override
             public void check() {
                 String targetName = "LEE";
                 System.out.println(targetName + "님의 예약 현황:");
-                for (Restaurant.Reservation reservation : restaurant.getReserveList().values()) {
-                    if (reservation.getReserveName().equals(targetName)) {
-                        System.out.println(reservation);
-                    }
-                }
+                restaurant.findReservationsByName(targetName)
+                        .forEach(System.out::println);
             }
         });
     }

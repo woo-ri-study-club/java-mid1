@@ -4,9 +4,13 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static section08.TableState.AVAILABLE;
+import static section08.TableState.RESERVED;
 
 public class Restaurant {
 
@@ -31,6 +35,13 @@ public class Restaurant {
         public int getTableNumber() {
             return tableNumber;
         }
+
+        @Override
+        public String toString() {
+            return "테이블 번호 : " + tableNumber +
+                    ", 예약 현황 : " + ( tableState==RESERVED ? "예약완료" : "예약가능" ) +
+                    (reserveNumber==null ? "" : ", 예약 번호: " + reserveNumber);
+        }
     }
 
     class Reservation {
@@ -42,19 +53,24 @@ public class Restaurant {
 
         public Reservation(int reservationNumber, String reserveDate, String reserveName, String comment) {
             this.reservationNumber = reservationNumber;
+            parseDate(reserveDate);
+            this.reserveName = reserveName;
+            this.comment = comment;
+        }
+
+        private void parseDate(String reserveDate) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
             try {
                 this.reserveDate = LocalDate.parse(reserveDate, formatter);
             } catch (DateTimeParseException e) {
                 throw new IllegalArgumentException("날짜 형식이 올바르지 않습니다. yyyy/MM/dd 형식으로 입력해주세요.");
             }
-            this.reserveName = reserveName;
-            this.comment = comment;
         }
 
         public LocalDate getReserveDate() {
             return reserveDate;
         }
+
 
         @Override
         public String toString() {
@@ -66,7 +82,7 @@ public class Restaurant {
                             ", 참고사항: " + comment;
         }
 
-        public Object getReserveName() {
+        public String getReserveName() {
             return reserveName;
         }
     }
@@ -79,38 +95,54 @@ public class Restaurant {
         tables.put(table.tableNumber, table);
     }
 
-    public Table getAvailableTable() {
+    public Optional<Table> getAvailableTable() {
         for (Table table : tables.values()) {
             if (table.isAvailable()) {
-                return table;
+                return Optional.of(table);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     void displayAvailableTableList() {
-        if (getAvailableTable() == null) {
-            System.out.println("예약가능한 테이블이 없습니다.");
-        }
-        System.out.print("예약 가능한 테이블은 ");
-        for (Table table : tables.values()) {
-            if (table.isAvailable()) {
-                System.out.print(table.getTableNumber() + " ");
-            }
-        }
-        System.out.println("입니다.");
+        String availableTables = tables.values().stream()
+                .filter(Table::isAvailable)
+                .map(table -> String.valueOf(table.getTableNumber()))
+                .collect(Collectors.joining(", "));
+
+        System.out.println(availableTables.isEmpty()
+                ? "예약가능한 테이블이 없습니다."
+                : "예약 가능한 테이블은 " + availableTables + " 번 입니다.");
+    }
+
+    void displayAllTableList() {
+        tables.values().stream()
+                .map(Table::toString)
+                .forEach(System.out::println);
     }
 
     void displayReserveList() {
-        for (Reservation reservation : reserveList.values()) {
-            System.out.println(reservation.toString());
-        }
+        reserveList.values().stream()
+                .map(Reservation::toString)
+                .forEach(System.out::println);
     }
 
-
-    public Map<Integer, Reservation> getReserveList() {
-        return reserveList;
+    public Optional<Reservation> findReservation(int reservationNumber) {
+        return Optional.ofNullable(reserveList.get(reservationNumber));
     }
+
+    public List<Reservation> findReservationsByName(String name) {
+        return reserveList.values().stream()
+                .filter(reservation -> reservation.getReserveName().equals(name))
+                .collect(Collectors.toList());
+    }
+
+    public List<Reservation> findReservationsByDate(LocalDate date) {
+        return reserveList.values().stream()
+                .filter(reservation -> reservation.getReserveDate().equals(date))
+                .collect(Collectors.toList());
+    }
+
 
     public void reserve(int reservationNumber, String reserveDate, String reserveName, String comment) {
         class TableStatusUpdater {
@@ -120,10 +152,8 @@ public class Restaurant {
             }
         }
 
-        Table table = getAvailableTable();
-        if (table == null) {
-            throw new IllegalStateException("사용 가능한 테이블이 없습니다.");
-        }
+        Table table = getAvailableTable()
+                .orElseThrow(() -> new IllegalStateException("사용 가능한 테이블이 없습니다."));
 
         if (reserveList.containsKey(reservationNumber)) {
             throw new IllegalArgumentException("이미 존재하는 예약번호입니다.");
@@ -146,10 +176,8 @@ public class Restaurant {
             }
         }
 
-        Reservation reservation = reserveList.get(reservationNumber);
-        if (reservation == null) {
-            throw new IllegalArgumentException("존재하지 않는 예약번호입니다.");
-        }
+        Reservation reservation = findReservation(reservationNumber)
+                .orElseThrow(()->new IllegalArgumentException("존재하지 않는 예약번호입니다."));
 
         Table table = tables.get(reservation.tableNumber);
         TableStatusUpdater statusUpdater = new TableStatusUpdater();
