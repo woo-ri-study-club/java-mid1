@@ -23,3 +23,4 @@ Restaurant
 └── TableStatusUpdater (지역 클래스)
 
 익명 클래스와 람다는  main 메서드 안에 구현을 하여 활용한다.
+
