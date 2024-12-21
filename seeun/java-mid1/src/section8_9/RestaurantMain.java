@@ -28,6 +28,8 @@ public class RestaurantMain {
                         .forEach(System.out::println)
         );
 
+        restaurant2.cancelReservation("예약자3", 2);
+
     }
 
 }

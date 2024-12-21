@@ -6,6 +6,8 @@ import java.util.function.Consumer;
 
 public class Restaurant {
 
+    private List<Table> tables = new ArrayList<>();
+    private List<Reservation> reservations = new ArrayList<>();
     private int tableCount = 0;
 
     private int generateTableNum() {
@@ -23,6 +25,10 @@ public class Restaurant {
 
         public void bookTable() {
             booked = true;
+        }
+
+        public void cancelBook() {
+            booked = false;
         }
 
         public boolean isBooked() {
@@ -56,36 +62,58 @@ public class Restaurant {
         }
     }
 
-    private List<Table> tables = new ArrayList<>();
-    private List<Reservation> reservations = new ArrayList<>();
-
-    public void addTable(){
-        Table newTable = new Table(generateTableNum());
-        tables.add(newTable);
-        System.out.println(newTable);
-    }
-
     public void addReservation(String name, int tableNum) {
 
         class TableStatusUpdater {
-            private Table table;
+            private final Table table;
 
             public TableStatusUpdater(Table table) {
                 this.table = table;
             }
 
-            void updateStatus() {
+            void reserve() {
                 table.bookTable();
                 System.out.println(table.num + "번 테이블 예약 완료");
             }
-        }
 
+        }
         Table findTable = findTableBy(tableNum);
         if(findTable.isBooked()){
             throw new IllegalStateException("이미 예약된 테이블입니다.");
         }
         reservations.add(new Reservation(name, findTable));
-        new TableStatusUpdater(findTable).updateStatus();
+        new TableStatusUpdater(findTable).reserve();
+    }
+
+    public void cancelReservation(String name, int tableNum) {
+
+        class TableStatusUpdater {
+            private final Table table;
+
+            public TableStatusUpdater(Table table) {
+                this.table = table;
+            }
+
+            void cancel() {
+                table.cancelBook();
+                System.out.println(table.num + "번 테이블 예약 취소");
+            }
+        }
+        Table findTable = findTableBy(tableNum);
+        if(!findTable.isBooked()) {
+            throw new IllegalStateException("예약되지 않은 테이블입니다.");
+        }
+        reservations.removeIf(reservation ->
+                reservation.name.equals(name) &&
+                        reservation.table.num == tableNum
+        );
+        new TableStatusUpdater(findTable).cancel();
+    }
+
+    public void addTable(){
+        Table newTable = new Table(generateTableNum());
+        tables.add(newTable);
+        System.out.println(newTable);
     }
 
     private Table findTableBy(int tableNum) {
