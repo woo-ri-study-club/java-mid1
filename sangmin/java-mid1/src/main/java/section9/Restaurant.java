@@ -3,6 +3,7 @@ package section9;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 public class Restaurant {
@@ -102,29 +103,29 @@ public class Restaurant {
             throw new IllegalArgumentException("이미 예약된 테이블입니다.");
         }
 
-        class Reserve implements TableStatusUpdater {
-            public void updateTableStatus() {
+        class Reserve {
+            public void reserve() {
                 Table table = tables.findTable(tableNumber);
                 table.reserve();
                 reservations.add(new Reservation(name, phoneNumber, date, table));
             }
         }
-        new Reserve().updateTableStatus();
+        new Reserve().reserve();
     }
 
     public void cancel(int tableNumber) {
-        class Cancel implements TableStatusUpdater {
-            public void updateTableStatus() {
+        class Cancel {
+            public void cancel() {
                 Table table = tables.findTable(tableNumber);
                 table.cancel();
                 reservations.removeIf(reservation -> reservation.getTableNumber() == tableNumber);
             }
         }
-        new Cancel().updateTableStatus();
+        new Cancel().cancel();
     }
 
-    public void updateTableStatus(TableStatusUpdater updater) {
-        updater.updateTableStatus();
+    public void viewTables(Consumer<Void> consumer) {
+
     }
 
     public List<Reservation> getReservations() {
