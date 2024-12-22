@@ -2,7 +2,6 @@ package section08_9;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.util.Objects.isNull;
 
@@ -33,7 +32,7 @@ public class Restaurant {
       return Optional.empty();
     }
 
-    Table availableTable = getNotReservationTable(reservationAt);
+    Table availableTable = getAvailableTable(reservationAt);
     if (isNull(availableTable)) {
       System.out.println("예약 가능한 테이블이 없습니다.");
       return Optional.empty();
@@ -61,30 +60,26 @@ public class Restaurant {
   }
 
   public void showReservationByPhoneNumber(String phoneNumber) {
-    AtomicBoolean showed = new AtomicBoolean(false);
+    boolean showed = false;
     Optional<Reservation> reservation = Arrays.stream(tables)
                                               .flatMap(table -> table.reservations.stream())
                                               .filter(r -> r.phoneNumber.equals(phoneNumber))
                                               .findFirst();
-    reservation.ifPresentOrElse(reserve -> {
-                                  System.out.println(reserve);
-                                  showed.set(true);
-                                },
-                                () -> {
-                                });
 
-    if (!showed.get()) {
+    if (reservation.isPresent()) {
+      System.out.println(reservation.get());
+      showed = true;
+    }
+
+    if (!showed) {
       System.out.println("`" + phoneNumber + "` 번호로는 예약기록이 없습니다.");
     }
   }
 
-  private Table getNotReservationTable(LocalDateTime reserveTime) {
-    for (Table table : tables) {
-      if (canReserveAfter(table, reserveTime)) {
-        return table;
-      }
-    }
-    return null;
+  private Table getAvailableTable(LocalDateTime reserveTime) {
+    return Arrays.stream(tables)
+                 .filter(table -> canReserveAfter(table, reserveTime))
+                 .findFirst().orElse(null);
   }
 
   private boolean canReserveAfter(Table table, LocalDateTime reserveTime) {
