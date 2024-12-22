@@ -30,7 +30,7 @@ public class Restaurant {
             isReserved = false;
         }
 
-        public boolean equalsTableNumber(int tableNumber) {
+        private boolean equalsTableNumber(int tableNumber) {
             return this.tableNumber == tableNumber;
         }
 
@@ -98,6 +98,10 @@ public class Restaurant {
     }
 
     public void reserve(int tableNumber, String name, String phoneNumber, String date) {
+        if(tables.findTable(tableNumber).isReserved) {
+            throw new IllegalArgumentException("이미 예약된 테이블입니다.");
+        }
+
         class Reserve implements TableStatusUpdater {
             public void updateTableStatus() {
                 Table table = tables.findTable(tableNumber);
@@ -105,8 +109,7 @@ public class Restaurant {
                 reservations.add(new Reservation(name, phoneNumber, date, table));
             }
         }
-        TableStatusUpdater updater = new Reserve();
-        updater.updateTableStatus();
+        new Reserve().updateTableStatus();
     }
 
     public void cancel(int tableNumber) {
@@ -114,11 +117,10 @@ public class Restaurant {
             public void updateTableStatus() {
                 Table table = tables.findTable(tableNumber);
                 table.cancel();
-                reservations.removeIf(reservation -> reservation.table == table);
+                reservations.removeIf(reservation -> reservation.getTableNumber() == tableNumber);
             }
         }
-        TableStatusUpdater updater = new Cancel();
-        updater.updateTableStatus();
+        new Cancel().updateTableStatus();
     }
 
     public void updateTableStatus(TableStatusUpdater updater) {
