@@ -142,6 +142,46 @@ try (BufferedReader br = new BufferedReader(new FileReader("test.txt"))) {
 }
 ```
 
+### 7. throws와 try~catch 처리의 차이
+
+#### throws를 사용하는 경우
+- 메서드 선언부에 `throws` 키워드를 추가하여 호출하는 쪽에서 예외를 처리하도록 위임합니다.
+- 주로 체크 예외(Checked Exception)에 사용되며, 예외를 처리할 책임을 상위 메서드로 넘깁니다.
+
+```java
+public void readFile() throws IOException {
+    FileReader reader = new FileReader("test.txt");
+}
+```
+
+- 장점
+  - 코드가 간결해지고 예외 처리 책임을 명확히 분리할 수 있습니다.
+- 단점
+  - 호출 계층이 깊어질수록 예외 처리가 복잡해질 수 있습니다.
+
+#### try-catch를 사용하는 경우
+- 예외를 발생한 위치에서 바로 처리합니다.
+- 예외가 발생할 가능성이 있는 코드를 try 블록에 작성하고, 예외 처리 로직을 catch 블록에서 구현합니다.
+
+```java
+try {
+    FileReader reader = new FileReader("test.txt");
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+
+- 장점
+  - 예외 발생 시 즉각적인 대응이 가능하며, 코드의 흐름을 명확히 유지할 수 있습니다.
+- 단점
+  - 예외 처리 코드가 많아질 경우 가독성이 떨어질 수 있습니다.
+
+#### 주요 차이점
+- throws는 예외를 처리하지 않고 상위 메서드에 전달하며, try-catch는 발생한 예외를 바로 처리합니다.
+- 언제 사용?
+  - throws: 예외를 상위 로직에서 처리하거나 예외 복구가 필요 없는 경우.
+  - try-catch: 예외를 발생한 위치에서 바로 복구하거나 특정 로직을 실행해야 할 경우.
+
 ---
 
 ### 결론
