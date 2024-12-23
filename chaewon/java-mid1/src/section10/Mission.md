@@ -233,5 +233,27 @@ finally로 매번 외부 자원을 해제하는 과정이 번거롭기 때문에
 
 이 방식을 통해 리소스 누수 방지와 자원 해제 누락 가능성 방지가 됩니다. 또한, 코드가 단순해져 가독성 또한 올라갑니다.
 
+### 트랜잭션에서의 체크 예외 / 언체크 예외 차이
+트랜잭션은 trans + action이 합쳐진 단어로 데이터베이스의 여러 작업이 하나의 논리적 단위로 처리되는 것을 말합니다.
+간단한 예시를 들자면, 한 메서드 내에서 데이터베이스에 a 데이터를 A 테이블에 저장 후 b 데이터를 B 테이블에 저장한다고 해봅시다. 그러면 저 두 개의 저장 로직 코드가 여러 개의 데이터베이스 작업이고, 메서드가 이 데이터베이스 작업들을 묶는 논리적 단위가 되는 것입니다.
 
+이 하나의 트랜잭션에서 아무 이상이 없으면 데이터가 잘 저장되겠지만, 만약 DB 작업 진행 중 예외가 발생되면 어떻게 될까요? b 데이터 저장 중에 예외가 발생된다면, a만 저장되고 b는 롤백되어야 하는 것이 맞을까요? 모두 롤백되는 것이 맞을까요?
 
+정답을 먼저 말하자면, '예외 발생 시 어떤 식으로 처리할 것인지는 개발자가 직접 정의할 수 있다.' 입니다.
+
+후반에 저희가 배울 spring의 공식 문서를 바탕으로 확인해보겠습니다.
+
+**@Transactional 어노테이션 공식 문서들 중 일부를 취합**
+```markdown
+**사용자가 정의하지 않을 경우**, RuntimeException(그 하위 언체크 예외)과 Error에 대해서는 롤백이 되고, 체크 예외는 롤백이 되지 않습니다.
+
+롤백 규칙으로 정의한 예외가 throw 될 시, 롤백할 지 여부를 결정하며 규칙은 유형 또는 패턴을 기반으로 합니다.
+rollbackFor/noRollbackFor/rollbackForClassName 옵션으로 롤백 규칙 정의가 가능합니다.
+
+`@EnableTransactionManagement(rollbackOn=ALL_EXCEPTIONS)` 어노테이션을 통해 기본 롤백 동작을 전역적 변경도 가능합니다. (6.2 버전부터)
+```
+[docs 1](https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html)
+
+[docs 2](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/transaction/annotation/Transactional.html)
+
+더 자세한 내용은 후반 스프링, JPA 강의에서 배울 것으로 기대되니 더 깊은 내용은 스킵하도록 하겠습니다.
