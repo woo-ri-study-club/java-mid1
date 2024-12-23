@@ -126,3 +126,6 @@ class Service implements AutoCloseable {
     }
 }
 ```
+
+## 트랜잭션
+- 기본적으로 spring transaction은 `unchecked exception`만 롤백하지만, 필요에 의해 `checked exception`도 롤백하도록 설정할 수 있다.
